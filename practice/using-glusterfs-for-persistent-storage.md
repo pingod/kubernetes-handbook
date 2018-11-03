@@ -37,9 +37,9 @@ $ systemctl status glusterd.service
 # 配置 hosts
 
 $ vi /etc/hosts
-172.20.0.113   test-001.jimmysong.io 
-172.20.0.114   test-002.jimmysong.io 
-172.20.0.115   test-003.jimmysong.io 
+172.20.0.113   test-001.jimmysong.io
+172.20.0.114   test-002.jimmysong.io
+172.20.0.115   test-003.jimmysong.io
 ```
 
 ```bash
@@ -159,7 +159,7 @@ $ vi /etc/hosts
 ## 配置 endpoints
 
 ```bash
-$ curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/volumes/glusterfs/glusterfs-endpoints.json
+$ curl -O https://raw.githubusercontent.com/kubernetes/examples/master/staging/volumes/glusterfs/glusterfs-endpoints.json
 
 # 修改 endpoints.json ，配置 glusters 集群节点ip
 # 每一个 addresses 为一个 ip 组
@@ -188,7 +188,7 @@ $ kubectl get ep
 ## 配置 service
 
 ```bash
-$ curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/volumes/glusterfs/glusterfs-service.json
+$ curl -O https://raw.githubusercontent.com/kubernetes/examples/master/staging/volumes/glusterfs/glusterfs-service.json
 
 # service.json 里面查找的是 enpointes 的名称与端口，端口默认配置为 1，我改成了1990
 
@@ -202,7 +202,7 @@ $ kubectl get svc
 ## 创建测试 pod
 
 ```bash
-$ curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/examples/volumes/glusterfs/glusterfs-pod.json
+$ curl -O https://raw.githubusercontent.com/kubernetes/examples/master/staging/volumes/glusterfs/glusterfs-pod.json
 
 # 编辑 glusterfs-pod.json
 # 修改 volumes  下的 path 为上面创建的 volume 名称
@@ -213,7 +213,7 @@ $ curl -O https://raw.githubusercontent.com/kubernetes/kubernetes/master/example
 $ kubectl apply -f glusterfs-pod.json
 
 # 查看 pods 状态
-$ kubectl get pods               
+$ kubectl get pods
 NAME                             READY     STATUS    RESTARTS   AGE
 glusterfs                        1/1       Running   0          1m
 
@@ -295,22 +295,22 @@ glusterfs-nginx   Bound     gluster-dev-volume   8Gi        RWX                 
 
 ```Bash
 $ vi nginx-deployment.yaml
-apiVersion: extensions/v1beta1 
-kind: Deployment 
-metadata: 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: nginx-dm
-spec: 
+spec:
   replicas: 2
-  template: 
-    metadata: 
-      labels: 
-        name: nginx 
-    spec: 
-      containers: 
-        - name: nginx 
-          image: nginx:alpine 
+  template:
+    metadata:
+      labels:
+        name: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
           imagePullPolicy: IfNotPresent
-          ports: 
+          ports:
             - containerPort: 80
           volumeMounts:
             - name: gluster-dev-volume
@@ -321,7 +321,7 @@ spec:
           claimName: glusterfs-nginx
 
 # 导入 deployment
-$ kubectl apply -f nginx-deployment.yaml 
+$ kubectl apply -f nginx-deployment.yaml
 
 # 查看 deployment
 $ kubectl get pods |grep nginx-dm
